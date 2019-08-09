@@ -5,6 +5,8 @@
 [Github Oauth](https://developer.github.com/apps/building-github-apps/creating-a-github-app/)
 ## 工具
 [Git](https://git-scm.com/)
+[lombook](https://projectlombok.org/)
+[thymeleaf](https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html)
 ##脚本
 ```sql
 CREATE TABLE `user` (
