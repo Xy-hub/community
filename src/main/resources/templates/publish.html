@@ -1,14 +1,15 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>蛇皮社区</title>
+    <title>发布-蛇皮社区</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="css/bootstrap.min.css"/>
     <link rel="stylesheet" href="css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="css/community.css"/>
     <script type="application/javascript" src="js/bootstrap.min.js"></script>
 </head>
 <body>
-
+    <!-- 头部开始 -->
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -17,7 +18,6 @@
                 </button>
                 <a class="navbar-brand" href="#">蛇皮社区</a>
             </div>
-
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <form class="navbar-form navbar-left">
                     <div class="form-group">
@@ -26,6 +26,7 @@
                     <button type="submit" class="btn btn-default">搜索</button>
                 </form>
                 <ul class="nav navbar-nav navbar-right">
+                    <!-- 从session域中判断user键是否为空，是则显示登录按钮，不是则显示用户名-->
                     <li class="dropdown" th:if="${session.user != null}">
                         <a href="/publish">发布</a>
                     </li>
@@ -38,10 +39,47 @@
                         </ul>
                     </li>
                     <li th:if="${session.user == null}"><a href="https://github.com/login/oauth/authorize?client_id=d9716f23fa8342a094f3&redirect_uri=http://localhost:8887/callback&scope=user&state=1">登录</a></li>
-
                 </ul>
             </div>
         </div>
     </nav>
+    <!-- 头部结束 -->
+    <!-- 中间部分开始，使用流动布局，各元素能根据网页大小改变布局 -->
+    <div class="container-fluid main">
+        <div class="row">
+            <!-- 左边部分开始 -->
+            <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+                <h2><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>发起</h2>
+                <hr/>
+                <form action="/publish" method="post">
+                    <div class="form-group">
+                        <label for="title">问题标题（简单扼要）</label>
+                        <input type="text" class="form-control" id="title" th:value="${title}" name="title" placeholder="问题标题...">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">问题补充</label>
+                        <textarea name="description" id="description" th:text="${description}" class="form-control" cols="30" rows="10"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="tag">添加标签</label>
+                        <input type="text" class="form-control" id="tag" name="tag" th:value="${tag}" placeholder="添加标签">
+                    </div>
+                    <span class="alert alert-danger" th:if="${error}!=null" th:text="${error}"></span>
+
+                    <button type="submit" class="btn btn-success publish-btn">发布</button>
+                </form>
+            </div>
+            <!-- 左边部分结束 -->
+            <!-- 右边部分开始 -->
+            <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                <h3>问题发起指南</h3>
+                1 <br>
+                2 <br>
+                3 <br>
+                4
+            </div>
+        </div>
+    </div>
+    <!-- 中间部分结束 -->
 </body>
 </html>
