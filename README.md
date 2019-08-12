@@ -7,7 +7,8 @@
 [Git](https://git-scm.com/)
 [lombook](https://projectlombok.org/)
 [thymeleaf](https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html)
-##脚本
+
+## 脚本
 ```sql
 CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

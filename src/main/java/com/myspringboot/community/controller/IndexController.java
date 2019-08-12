@@ -1,5 +1,6 @@
 package com.myspringboot.community.controller;
 
+import com.myspringboot.community.dto.PaginationDTO;
 import com.myspringboot.community.dto.QuestionDTO;
 import com.myspringboot.community.mapper.QuestionMapper;
 import com.myspringboot.community.mapper.UserMapper;
@@ -30,7 +31,9 @@ public class IndexController {
     private QuestionService questionService;
 
     @GetMapping("/")
-    public String index(HttpServletRequest request,Model model){
+    public String index(HttpServletRequest request,Model model,
+                        @RequestParam(name = "page",defaultValue = "1") Integer page,
+                        @RequestParam(name = "pageSize",defaultValue = "5") Integer pageSize){
         //从cookie中查找用户判断是否已登录
         Cookie[] cookies = request.getCookies();
         if(cookies!=null){
@@ -47,8 +50,9 @@ public class IndexController {
             }
         }
         //使用DTO解决mybatis级联操作
-        List<QuestionDTO> questionList=questionService.list();
-        model.addAttribute("questions",questionList);
+        PaginationDTO pagination=questionService.list(page,pageSize);
+
+        model.addAttribute("pagination",pagination);
         return "index";
     }
 }

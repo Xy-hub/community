@@ -1,5 +1,6 @@
 package com.myspringboot.community.service;
 
+import com.myspringboot.community.dto.PaginationDTO;
 import com.myspringboot.community.dto.QuestionDTO;
 import com.myspringboot.community.mapper.QuestionMapper;
 import com.myspringboot.community.mapper.UserMapper;
@@ -24,9 +25,19 @@ public class QuestionService {
     @Autowired
     private QuestionMapper questionMapper;
 
-    public List<QuestionDTO> list() {
-        List<Question> questionList = questionMapper.list();
+    public PaginationDTO list(Integer page, Integer pageSize) {
+        Integer total = questionMapper.count();
+        Integer pageCount=total%pageSize==0?total/pageSize:total/pageSize+1;
+        if(page<1){
+            page=1;
+        }else if(page>pageCount){
+            page=pageCount;
+        }
+
+        int offset=pageSize*(page-1);
+        List<Question> questionList = questionMapper.list(offset,pageSize);
         List<QuestionDTO> questionDTOList=new ArrayList<>();
+        PaginationDTO paginationDTO = new PaginationDTO();
         for (Question question : questionList) {
             User user=userMapper.findByAccountId(question.getCreator());
             QuestionDTO questionDTO = new QuestionDTO();
@@ -35,6 +46,8 @@ public class QuestionService {
             questionDTO.setUser(user);
             questionDTOList.add(questionDTO);
         }
-        return questionDTOList;
+        paginationDTO.setQuestionDTOList(questionDTOList);
+        paginationDTO.setPagination(total,page,pageSize);
+        return paginationDTO;
     }
 }

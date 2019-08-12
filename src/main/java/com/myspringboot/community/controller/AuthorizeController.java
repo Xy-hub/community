@@ -48,6 +48,7 @@ public class AuthorizeController {
         accessTokenDto.setClient_id(clientId);
         accessTokenDto.setClient_secret(clientSecret);
         String accessToken = githubProvider.getAccessToken(accessTokenDto);
+        //git中的数据
         GithubUser githubUser = githubProvider.getUser(accessToken);
         if(githubUser!=null&&githubUser.getId()!=null){
             User user = new User();
