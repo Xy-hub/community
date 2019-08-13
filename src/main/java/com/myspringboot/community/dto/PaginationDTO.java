@@ -11,7 +11,7 @@ import java.util.List;
  */
 @Data
 public class PaginationDTO {
-    //全部数据
+    //所有的问题，包含作者信息
     private List<QuestionDTO> questionDTOList;
     //上一页
     private boolean showPrevious;
