@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${question.title}"></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="/css/community.css"/>
+    <script src="/js/jquery-3.4.1.min.js"></script>
+    <script type="application/javascript" src="/js/bootstrap.min.js"></script>
+</head>
+<body>
+<!-- 头部开始 -->
+<div th:replace="navigation :: nav"></div>
+<!-- 头部结束 -->
+<!-- 中间部分开始，使用流动布局，各元素能根据网页大小改变布局 -->
+<div class="container-fluid main profile">
+    <div class="row">
+        <!-- 左边部分开始 -->
+        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+            <h4><span th:text="${question.title}"></span></h4>
+            <span class="text-desc">
+                作者：<span th:text="${question.user.name}"></span>&nbsp;|
+                发布时间：<span th:text="${#dates.format(question.gmtCreate,'yyyy年MM月dd日 HH:mm')}"></span>&nbsp;|
+                阅读数：<span th:text="${question.viewCount}"></span>
+            </span>
+            <hr/>
+        </div>
+        <!-- 左边部分结束 -->
+        <!-- 右边部分开始 -->
+        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h4>发起人</h4>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h4>相关问题</h4>
+            </div>
+        </div>
+        <!-- 右边部分结束 -->
+    </div>
+</div>
+<!-- 中间部分结束 -->
+</body>
+</html>
