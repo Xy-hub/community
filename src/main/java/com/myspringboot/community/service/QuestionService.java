@@ -49,7 +49,7 @@ public class QuestionService {
         //按照指定条件获取所有问题，这里是每次获取pageSize条数据，从第offset开始
         List<Question> questionList = questionMapper.list(offset,pageSize);
         List<QuestionDTO> questionDTOList=new ArrayList<>();
-
+        //对象转换与属性添加
         for (Question question : questionList) {
             User user=userMapper.findByAccountId(question.getCreator());
             QuestionDTO questionDTO = new QuestionDTO();
@@ -105,5 +105,18 @@ public class QuestionService {
         User user=userMapper.findByAccountId(question.getCreator());
         questionDTO.setUser(user);
         return questionDTO;
+    }
+
+    public void createOrUpdate(Question question) {
+        if(question.getId()==null){
+            //创建
+            question.setGmtCreate(System.currentTimeMillis());
+            question.setGmtModified(question.getGmtCreate());
+            questionMapper.create(question);
+        }else{
+            //更新
+            question.setGmtModified(System.currentTimeMillis());
+            questionMapper.update(question);
+        }
     }
 }

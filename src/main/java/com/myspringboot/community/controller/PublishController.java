@@ -1,12 +1,15 @@
 package com.myspringboot.community.controller;
 
+import com.myspringboot.community.dto.QuestionDTO;
 import com.myspringboot.community.mapper.QuestionMapper;
 import com.myspringboot.community.model.Question;
 import com.myspringboot.community.model.User;
+import com.myspringboot.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -15,9 +18,18 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class PublishController {
 
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
-    QuestionMapper questionMapper;
+    QuestionService questionService;
+
+    @GetMapping("/publish/{id}")
+    public String edit(@PathVariable(name = "id") Integer id,Model model){
+        QuestionDTO question=questionService.getById(id);
+        model.addAttribute("title",question.getTitle());
+        model.addAttribute("description",question.getDescription());
+        model.addAttribute("tag",question.getTag());
+        model.addAttribute("id",question.getId());
+        return "publish";
+    }
 
     @GetMapping("/publish")
     public String publish(){
@@ -28,8 +40,9 @@ public class PublishController {
     public String doPublish(
             @RequestParam("title") String title,
             @RequestParam("description") String description,
-            @RequestParam("tag") String tag, HttpServletRequest request, Model model){
-
+            @RequestParam("tag") String tag,
+            @RequestParam(value="id",required = false) Integer id,
+            HttpServletRequest request, Model model){
         model.addAttribute("title",title);
         model.addAttribute("description",description);
         model.addAttribute("tag",tag);
@@ -60,9 +73,9 @@ public class PublishController {
         question.setTag(tag);
         String accountId = user.getAccountId();
         question.setCreator(Integer.parseInt(accountId.trim()));
-        question.setGmtCreate(System.currentTimeMillis());
-        question.setGmtModified(question.getGmtCreate());
-        questionMapper.create(question);
+        question.setId(id);
+        questionService.createOrUpdate(question);
+
         return "redirect:/";
     }
 }

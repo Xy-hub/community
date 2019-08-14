@@ -4,6 +4,7 @@ import com.myspringboot.community.model.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 @Mapper
 public interface UserMapper {
@@ -15,6 +16,9 @@ public interface UserMapper {
     @Select("select * from user where token=#{token}")
     User findByToken(String token);
 
-    @Select("select * from user where account_id=#{accountId} limit 1")
+    @Select("select * from user where account_id=#{accountId}")
     User findByAccountId(Integer accountId);
+
+    @Update("update user set gmt_modified=#{gmtModified},token=#{token} where account_id=#{accountId}")
+    void update(User dbUser);
 }
