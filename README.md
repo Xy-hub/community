@@ -35,4 +35,6 @@ CREATE TABLE `question` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
 
-```
+```bash
+mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
+
