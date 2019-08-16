@@ -2,6 +2,7 @@ package com.myspringboot.community.service;
 
 import com.myspringboot.community.dto.PaginationDTO;
 import com.myspringboot.community.dto.QuestionDTO;
+import com.myspringboot.community.exception.MyException;
 import com.myspringboot.community.mapper.QuestionMapper;
 import com.myspringboot.community.mapper.UserMapper;
 import com.myspringboot.community.model.Question;
@@ -113,6 +114,9 @@ public class QuestionService {
      */
     public QuestionDTO getById(Integer id) {
         Question question=questionMapper.getById(id);
+        if(question==null){
+            throw new MyException("你找的问题不存在！");
+        }
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question,questionDTO);
         UserExample userExample=new UserExample();
@@ -133,7 +137,10 @@ public class QuestionService {
         }else{
             //更新
             question.setGmtModified(System.currentTimeMillis());
-            questionMapper.update(question);
+            int updated = questionMapper.update(question);
+            if(updated!=1){
+                throw new MyException("你找的问题不存在！");
+            }
         }
     }
 }
