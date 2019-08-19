@@ -29,9 +29,8 @@
             <property name="enableSubmvn -Dmybatis.generator.overwrite=true mybatis-generator:generatePackages" value="true" />
         </javaClientGenerator>
 
-        <table tableName="user" domainObjectName="User" >
-
-        </table>
+        <table tableName="user" domainObjectName="User" ></table>
+        <table tableName="comment" domainObjectName="Comment" ></table>
 
     </context>
 </generatorConfiguration>
