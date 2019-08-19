@@ -15,12 +15,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * 问题发布控制层
+ */
 @Controller
 public class PublishController {
 
     @Autowired
     QuestionService questionService;
 
+    //进入编辑页面，主要是数据回显
     @GetMapping("/publish/{id}")
     public String edit(@PathVariable(name = "id") Integer id,Model model){
         QuestionDTO question=questionService.getById(id);
@@ -31,11 +35,14 @@ public class PublishController {
         return "publish";
     }
 
+    //跳转问题发布页面
     @GetMapping("/publish")
     public String publish(){
         return "publish";
     }
 
+    //点击发布按钮发布问题
+    //post请求
     @PostMapping("/publish")
     public String doPublish(
             @RequestParam("title") String title,
@@ -43,6 +50,7 @@ public class PublishController {
             @RequestParam("tag") String tag,
             @RequestParam(value="id",required = false) Integer id,
             HttpServletRequest request, Model model){
+        //用来设置数据回显
         model.addAttribute("title",title);
         model.addAttribute("description",description);
         model.addAttribute("tag",tag);

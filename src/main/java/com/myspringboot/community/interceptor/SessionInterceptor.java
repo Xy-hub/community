@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
- * 定义拦截器拦截登录请求
+ * 定义拦截器，这里主要是拦截登录信息
  */
 @Component
 public class SessionInterceptor implements HandlerInterceptor {

@@ -2,6 +2,7 @@ package com.myspringboot.community.service;
 
 import com.myspringboot.community.dto.PaginationDTO;
 import com.myspringboot.community.dto.QuestionDTO;
+import com.myspringboot.community.exception.MyErrorCode;
 import com.myspringboot.community.exception.MyException;
 import com.myspringboot.community.mapper.QuestionMapper;
 import com.myspringboot.community.mapper.UserMapper;
@@ -77,7 +78,9 @@ public class QuestionService {
      */
     public PaginationDTO list(String accountId, Integer page, Integer pageSize) {
         PaginationDTO paginationDTO = new PaginationDTO();
+        //取得我的问题总数
         Integer total = questionMapper.countByAccountId(accountId);
+        //设置分页信息
         paginationDTO.setPagination(total,page,pageSize);
         //Integer pageCount=total%pageSize==0?total/pageSize:total/pageSize+1;
         if(page<1){
@@ -91,7 +94,6 @@ public class QuestionService {
         List<QuestionDTO> questionDTOList=new ArrayList<>();
 
         for (Question question : questionList) {
-
             UserExample userExample=new UserExample();
             userExample.createCriteria().andAccountIdEqualTo(question.getCreator().toString());
             List<User> users = userMapper.selectByExample(userExample);
@@ -114,8 +116,9 @@ public class QuestionService {
      */
     public QuestionDTO getById(Integer id) {
         Question question=questionMapper.getById(id);
+        //抛出自定义异常
         if(question==null){
-            throw new MyException("你找的问题不存在！");
+            throw new MyException(MyErrorCode.QUESTION_NOT_FOUND);
         }
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question,questionDTO);
@@ -138,8 +141,10 @@ public class QuestionService {
             //更新
             question.setGmtModified(System.currentTimeMillis());
             int updated = questionMapper.update(question);
+            //这里判断update!=-1是防止在修改问题是其他人删除了该问题导致的空指针异常
+            //抛出自定义异常
             if(updated!=1){
-                throw new MyException("你找的问题不存在！");
+                throw new MyException(MyErrorCode.QUESTION_NOT_FOUND);
             }
         }
     }

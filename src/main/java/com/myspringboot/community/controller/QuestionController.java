@@ -14,6 +14,7 @@ public class QuestionController {
     @Autowired
     QuestionService questionService;
 
+    //问题详情
     @GetMapping("/question/{id}")
     public String question(@PathVariable("id") Integer id, Model model){
         QuestionDTO questionDTO= questionService.getById(id);

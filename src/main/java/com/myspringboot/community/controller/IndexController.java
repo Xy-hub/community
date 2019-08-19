@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class IndexController {
 
-
-
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private QuestionService questionService;
