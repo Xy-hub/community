@@ -18,6 +18,8 @@ public class QuestionController {
     @GetMapping("/question/{id}")
     public String question(@PathVariable("id") Integer id, Model model){
         QuestionDTO questionDTO= questionService.getById(id);
+        //累加回复数
+        questionService.incView(id);
         model.addAttribute("question",questionDTO);
         return "question";
     }
