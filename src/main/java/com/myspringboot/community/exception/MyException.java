@@ -5,16 +5,18 @@ package com.myspringboot.community.exception;
  */
 public class MyException extends RuntimeException{
     private String message;
+    private Integer code;
 
     public MyException(IMyErrorCode errorCode) {
         this.message = errorCode.getMessage();
-    }
-
-    public MyException(String message) {
-        this.message = message;
+        this.code=errorCode.getCode();
     }
 
     public String getMessage(){
         return message;
+    }
+
+    public Integer getCode() {
+        return code;
     }
 }

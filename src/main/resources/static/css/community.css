@@ -36,3 +36,9 @@ body{
 .jumbotron{
     margin: 50px;
 }
+.media-body{
+    padding-top: 20px;
+}
+.comment{
+    margin:10px 0;
+}

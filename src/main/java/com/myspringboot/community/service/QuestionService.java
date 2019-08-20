@@ -153,6 +153,7 @@ public class QuestionService {
         //Question question=questionMapper.getById(id);
         Question updateQuestion=new Question();
         updateQuestion.setId(id);
+        updateQuestion.setViewCount(1);
         //updateQuestion.setViewCount(question.getViewCount()+1);
         questionMapper.updateReply(updateQuestion);
     }
