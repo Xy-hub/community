@@ -1,5 +1,8 @@
 package com.myspringboot.community.exception;
 
+/**
+ * 枚举类，自定义异常状态码和信息
+ */
 public enum MyErrorCode implements IMyErrorCode{
 
     QUESTION_NOT_FOUND(2001,"你找的问题不存在!"),

@@ -39,6 +39,25 @@ body{
 .media-body{
     padding-top: 20px;
 }
+
 .comment{
     margin:10px 0;
+}
+.comment-media{
+    padding-top: 5px;
+}
+.comment-content{
+    font-size: 15px;
+}
+.menu{
+    color: #999;
+    margin-top: 5px;
+}
+.menu .icon{
+    margin-right:6px;
+    font-size: 15px;
+    cursor: pointer;
+}
+.menu .icon:hover{
+    color: #499ef3;
 }

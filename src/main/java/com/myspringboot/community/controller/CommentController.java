@@ -1,6 +1,6 @@
 package com.myspringboot.community.controller;
 
-import com.myspringboot.community.dto.CommentDTO;
+import com.myspringboot.community.dto.CommentCreateDTO;
 import com.myspringboot.community.dto.ResultDTO;
 import com.myspringboot.community.exception.MyErrorCode;
 import com.myspringboot.community.mapper.CommentMapper;
@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 public class CommentController {
@@ -29,7 +27,7 @@ public class CommentController {
 
     @ResponseBody
     @RequestMapping(value="/comment",method = RequestMethod.POST)
-    public Object post(@RequestBody CommentDTO commentDTO, HttpServletRequest request){
+    public Object post(@RequestBody CommentCreateDTO commentDTO, HttpServletRequest request){
         User user=(User)request.getSession().getAttribute("user");
         if(user==null){
             return ResultDTO.errorOf(MyErrorCode.NO_LOGIN);

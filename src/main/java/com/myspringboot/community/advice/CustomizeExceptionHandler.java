@@ -49,7 +49,6 @@ public class CustomizeExceptionHandler {
             //错误页面跳转
             //获取异常状态码 ，404，500之类的
             HttpStatus status = getStatus(request);
-
             modelAndView.setViewName("error");
             //判断捕获的异常是否是自定义异常类
             if(ex instanceof MyException){
