@@ -26,7 +26,7 @@ public class QuestionController {
     @GetMapping("/question/{id}")
     public String question(@PathVariable("id") Integer id, Model model){
         QuestionDTO questionDTO= questionService.getById(id);
-
+        //System.out.println("123");
         List<CommentDTO> list=commentService.listByTargetId(id, CommentTypeEnum.QUESTION);
         //累加回复数
         questionService.incView(id);
