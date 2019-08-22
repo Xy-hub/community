@@ -21,7 +21,7 @@
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
             <!--正文-->
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <h4><span th:text="${question.title}"></span></h4>
+                <h4 class="question-title"><span th:text="${question.title}"></span></h4>
                 <span class="text-desc">
                     作者：<span th:text="${question.user.name}"></span>&nbsp;|
                     发布时间：<span th:text="${#dates.format(question.gmtCreate,'yyyy年MM月dd日 HH:mm')}"></span>&nbsp;|
@@ -50,20 +50,49 @@
                             <img class="media-object img-rounded" th:src="${comment.user.avatarUrl}">
                         </a>
                     </div>
-                    <div class="media-body comment-media">
+                    <div class="media-body comment-media" th:id="${'comment-body-'+comment.id}">
                         <h5 class="media-heading">
                             <span th:text="${comment.user.name}"></span>
                         </h5>
                         <div class="comment-content" th:text="${comment.content}"></div>
                         <div class="menu">
                             <span class="glyphicon glyphicon-thumbs-up icon"></span>
-                            <span class="glyphicon glyphicon-comment icon"></span>
+                            <span class="glyphicon glyphicon-comment icon" th:data-id="${comment.id}" onclick="collapseComments(this)"></span>
                             <span class="pull-right" th:text="${#dates.format(comment.gmtCreate,'yyyy-MM-dd')}"></span>
+                        </div>
+                        <!-- 二级评论 -->
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 collapse sub-comment" th:id="${'comment-'+comment.id}">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" th:each="comment:${comments}">
+                                <div class="media" style="padding: 0 15px;">
+                                    <div class="media-left">
+                                        <a href="#">
+                                            <img class="media-object img-rounded" th:src="${comment.user.avatarUrl}">
+                                        </a>
+                                    </div>
+                                    <div class="media-body comment-media">
+                                        <h5 class="media-heading">
+                                            <span th:text="${comment.user.name}"></span>
+                                        </h5>
+                                        <div class="comment-content" th:text="${comment.content}"></div>
+                                        <div class="menu">
+                                            <span class="pull-right" th:text="${#dates.format(comment.gmtCreate,'yyyy-MM-dd')}"></span>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 0;margin-top:10px;"/>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <input type="text" class="form-control" placeholder="评论一下" th:id="${'input-'+comment.id}">
+                                <button type="submit" class="btn btn-success sub-comment-btn" onclick="comment(this)" th:data-id="${comment.id}">评论</button>
+                                <button type="submit" class="btn btn-default sub-comment-btn">取消</button>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 0;margin-top:10px;"/>
             </div>
+            <!-- 回复输入框 -->
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="comment_section">
                 <div class="media">
                     <div class="media-left">

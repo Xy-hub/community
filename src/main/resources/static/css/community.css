@@ -11,6 +11,10 @@ body{
     float: right;
     margin-bottom: 15px;
 }
+.sub-comment-btn{
+    float: right;
+    margin:10px 5px;
+}
 .media-object{
     width: 45px;
     height: 45px;
@@ -39,9 +43,14 @@ body{
 .media-body{
     padding-top: 20px;
 }
-
 .comment{
     margin:10px 0;
+}
+.sub-comment{
+    border-radius: 5px;
+    margin-top:10px;
+    border:1px solid #eee;
+    padding-top: 15px;
 }
 .comment-media{
     padding-top: 5px;
@@ -58,6 +67,12 @@ body{
     font-size: 15px;
     cursor: pointer;
 }
+.menu .active{
+    color: #499ef3;
+}
 .menu .icon:hover{
     color: #499ef3;
+}
+.question-title{
+    margin-top:25px;
 }
