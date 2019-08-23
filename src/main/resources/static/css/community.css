@@ -46,6 +46,11 @@ body{
 .comment{
     margin:10px 0;
 }
+.comments{
+    border-bottom: solid 1px #eeeeee;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+}
 .sub-comment{
     border-radius: 5px;
     margin-top:10px;
