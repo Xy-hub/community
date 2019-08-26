@@ -4,6 +4,7 @@ import com.myspringboot.community.dto.CommentDTO;
 import com.myspringboot.community.enums.CommentTypeEnum;
 import com.myspringboot.community.exception.MyErrorCode;
 import com.myspringboot.community.exception.MyException;
+import com.myspringboot.community.mapper.CommentExtMapper;
 import com.myspringboot.community.mapper.CommentMapper;
 import com.myspringboot.community.mapper.QuestionMapper;
 import com.myspringboot.community.mapper.UserMapper;
@@ -31,6 +32,9 @@ public class CommentService {
     @Autowired
     UserMapper userMapper;
 
+    @Autowired
+    CommentExtMapper commentExtMapper;
+
     //插入回复，做出许多表单验证
     @Transactional      //使用注解，当出现异常时会自动回滚，也就是回到方法运行之前的状态
     public void insert(Comment comment) {
@@ -49,6 +53,11 @@ public class CommentService {
                 throw new MyException(MyErrorCode.COMMENT_NOT_FOUND);
             }
             commentMapper.insert(comment);
+            Comment parentComment = new Comment();
+            //更新上一级评论的回复数
+            parentComment.setId(comment.getParentId());
+            parentComment.setCommentCount(1);
+            commentExtMapper.incCommentCouont(parentComment);
         }else{
             //回复问题
             Question question = questionMapper.getById(comment.getParentId());

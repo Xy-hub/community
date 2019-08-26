@@ -9,12 +9,15 @@ import com.myspringboot.community.mapper.UserMapper;
 import com.myspringboot.community.model.Question;
 import com.myspringboot.community.model.User;
 import com.myspringboot.community.model.UserExample;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * service层可以用来做中间层，处理mapper与controller中不能直接交互的数据。比如对象之间的转换
@@ -156,5 +159,24 @@ public class QuestionService {
         updateQuestion.setViewCount(1);
         //updateQuestion.setViewCount(question.getViewCount()+1);
         questionMapper.updateReply(updateQuestion);
+    }
+
+    public List<QuestionDTO> selectRelated(QuestionDTO questionDTO) {
+        if(StringUtils.isBlank(questionDTO.getTag())){
+            return new ArrayList<>();
+        }else{
+            String[] tags = StringUtils.split(questionDTO.getTag(), ",");
+            String regexpTag = Arrays.stream(tags).collect(Collectors.joining("|"));
+            Question question = new Question();
+            question.setId(questionDTO.getId());
+            question.setTag(regexpTag);
+            List<Question> questionList = questionMapper.selectRelated(question);
+            List<QuestionDTO> questionDTOS = questionList.stream().map(q -> {
+                QuestionDTO questionDTO1 = new QuestionDTO();
+                BeanUtils.copyProperties(q,questionDTO1);
+                return questionDTO1;
+            }).collect(Collectors.toList());
+            return questionDTOS;
+        }
     }
 }

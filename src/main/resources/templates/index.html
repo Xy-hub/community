@@ -36,10 +36,10 @@
                             <img class="media-object img-rounded" th:src="${question.user.avatarUrl}">
                         </a>
                     </div>
-                    <div class="media-body">
-                        <h4 class="media-heading">
+                    <div class="media-body" style="padding-top: 5px;">
+                        <h3 class="media-heading">
                             <a th:href="@{'/question/'+${question.id}}" th:text="${question.title}"></a>
-                        </h4>
+                        </h3>
                         <span th:text="${question.description}"></span>
                         <span class="text-desc"> <span th:text="${question.commentCount}"></span>个回复 •
                             <span th:text="${question.viewCount}"></span>次浏览 •

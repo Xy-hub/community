@@ -12,7 +12,7 @@ public interface QuestionMapper {
             "(#{title},#{description},#{gmtCreate},#{gmtModified},#{creator},#{tag})")
     void create(Question question);
 
-    @Select("select * from question limit #{offset},#{pageSize}")
+    @Select("select * from question order by gmt_create desc limit #{offset},#{pageSize}")
     List<Question> list(@Param("offset") int offset, @Param("pageSize") Integer pageSize);
 
     @Select("select count(1) from question")
@@ -35,4 +35,8 @@ public interface QuestionMapper {
 
     @Update("update question set comment_count=comment_count+#{commentCount} where id=#{id}")
     int incComment(Question question);
+
+    @Select("select * from question where tag regexp #{tag} and id<>#{id}")
+    List<Question> selectRelated(Question quqestion);
+
 }
