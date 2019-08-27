@@ -98,3 +98,27 @@ function collapseComments(e){
 
     }
 }
+
+function SelectTag(value){
+    var oldTag=$("#tag").val();
+    if(oldTag){
+        var strings = oldTag.split(",");
+        var index=strings.length;
+        var flag=true;
+        while(flag&&index>=0){
+            if(strings[index]===value){
+                flag=false;
+            }
+            index--;
+        }
+        if(flag){
+            $("#tag").val(oldTag+","+value);
+        }
+    }else{
+        $("#tag").val(value);
+    }
+}
+
+function showSelectTag(){
+    $("#selectTag").toggle();
+}
