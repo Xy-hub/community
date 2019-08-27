@@ -2,12 +2,11 @@ package com.myspringboot.community.service;
 
 import com.myspringboot.community.dto.CommentDTO;
 import com.myspringboot.community.enums.CommentTypeEnum;
+import com.myspringboot.community.enums.NotificationEnum;
+import com.myspringboot.community.enums.NotificationStatusEnum;
 import com.myspringboot.community.exception.MyErrorCode;
 import com.myspringboot.community.exception.MyException;
-import com.myspringboot.community.mapper.CommentExtMapper;
-import com.myspringboot.community.mapper.CommentMapper;
-import com.myspringboot.community.mapper.QuestionMapper;
-import com.myspringboot.community.mapper.UserMapper;
+import com.myspringboot.community.mapper.*;
 import com.myspringboot.community.model.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +34,9 @@ public class CommentService {
     @Autowired
     CommentExtMapper commentExtMapper;
 
+    @Autowired
+    NotificationMapper notificationMapper;
+
     //插入回复，做出许多表单验证
     @Transactional      //使用注解，当出现异常时会自动回滚，也就是回到方法运行之前的状态
     public void insert(Comment comment) {
@@ -58,6 +60,7 @@ public class CommentService {
             parentComment.setId(comment.getParentId());
             parentComment.setCommentCount(1);
             commentExtMapper.incCommentCouont(parentComment);
+            createNotify(comment, dbComment.getCommentator(), NotificationEnum.REPLY_COMMENT.getStatus());
         }else{
             //回复问题
             Question question = questionMapper.getById(comment.getParentId());
@@ -69,7 +72,19 @@ public class CommentService {
             question.setCommentCount(1);
             //更新问题回复数
             questionMapper.incComment(question);
+            createNotify(comment,question.getCreator(), NotificationEnum.REPLY_QUESTION.getStatus());
         }
+    }
+
+    private void createNotify(Comment comment, Integer receiver, int replyCommentStatus) {
+        Notification notification = new Notification();
+        notification.setGmtCreate(System.currentTimeMillis());
+        notification.setType(replyCommentStatus);
+        notification.setOuterId(comment.getParentId());
+        notification.setNotifier(comment.getCommentator());
+        notification.setStatus(NotificationStatusEnum.UNREAD.getStatus());
+        notification.setReceiver(receiver);
+        notificationMapper.insert(notification);
     }
 
     public List<CommentDTO> listByTargetId(Integer id, CommentTypeEnum type) {

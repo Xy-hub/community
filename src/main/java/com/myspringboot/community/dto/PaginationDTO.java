@@ -10,9 +10,9 @@ import java.util.List;
  * 分页数据传输类
  */
 @Data
-public class PaginationDTO {
+public class PaginationDTO<T> {
     //所有的问题，包含作者信息
-    private List<QuestionDTO> questionDTOList;
+    private List<T> data;
     //上一页
     private boolean showPrevious;
     //首页

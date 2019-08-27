@@ -34,4 +34,5 @@
         <table tableName="notification" domainObjectName="Notification" ></table>
 
     </context>
+
 </generatorConfiguration>
