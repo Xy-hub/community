@@ -18,4 +18,13 @@ public enum NotificationEnum {
         this.status=status;
         this.name=name;
     }
+
+    public static String nameOfStatus(int type){
+        for (NotificationEnum value : NotificationEnum.values()) {
+            if(value.getStatus()==type){
+                return value.getName();
+            }
+        }
+        return "";
+    }
 }

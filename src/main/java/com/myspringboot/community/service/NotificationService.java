@@ -3,6 +3,10 @@ package com.myspringboot.community.service;
 import com.myspringboot.community.dto.NotificationDTO;
 import com.myspringboot.community.dto.PaginationDTO;
 import com.myspringboot.community.dto.QuestionDTO;
+import com.myspringboot.community.enums.NotificationEnum;
+import com.myspringboot.community.enums.NotificationStatusEnum;
+import com.myspringboot.community.exception.MyErrorCode;
+import com.myspringboot.community.exception.MyException;
 import com.myspringboot.community.mapper.NotificationMapper;
 import com.myspringboot.community.mapper.UserMapper;
 import com.myspringboot.community.model.*;
@@ -42,25 +46,38 @@ public class NotificationService {
         }
 
         int offset=pageSize*(page-1);
-        List<Notification> notifications = notificationMapper.listByAccountId(accountId,offset,pageSize);
+        List<Notification> notifications = notificationMapper.listByAccountId(Integer.valueOf(accountId),offset,pageSize);
         if(notifications.size()==0){
             return paginationDTO;
         }
-
-        Set<Integer> disUserAccountIds=notifications.stream().map(notify->notify.getNotifier()).collect(Collectors.toSet());
-        ArrayList<Integer> userAccountId = new ArrayList<>(disUserAccountIds);
-        ArrayList<String> userAccountIds = new ArrayList<>();
-        for(Integer id:userAccountId){
-            String str=id.toString();
-            userAccountIds.add(str);
-        }
-        UserExample userExample = new UserExample();
-        userExample.createCriteria().andAccountIdIn(userAccountIds);
-        List<User> users = userMapper.selectByExample(userExample);
-        Map<String, User> userMap = users.stream().collect(Collectors.toMap(u -> u.getAccountId(), u -> u));
-
         List<NotificationDTO> notificationDTOS=new ArrayList<>();
-
+        for (Notification notification : notifications) {
+            NotificationDTO notificationDTO = new NotificationDTO();
+            BeanUtils.copyProperties(notification,notificationDTO);
+            notificationDTO.setTypeName(NotificationEnum.nameOfStatus(notification.getType()));
+            notificationDTOS.add(notificationDTO);
+        }
+        paginationDTO.setData(notificationDTOS);
         return paginationDTO;
+    }
+
+    public int unreadCount(String accountId) {
+        NotificationExample example = new NotificationExample();
+        example.createCriteria().andReceiverEqualTo(Integer.valueOf(accountId)).andStatusEqualTo(0);
+        return notificationMapper.countByExample(example);
+    }
+
+    public NotificationDTO read(String id, User user) {
+        Notification notification = notificationMapper.selectByPrimaryKey(id);
+        if(notification.getReceiver()!=Integer.parseInt(user.getAccountId())){
+            throw new MyException(MyErrorCode.READ_NOTIFICATION_FAIL);
+        }
+        notification.setStatus(NotificationStatusEnum.READ.getStatus());
+        notificationMapper.updateByPrimaryKey(notification);
+        NotificationDTO notificationDTO = new NotificationDTO();
+        BeanUtils.copyProperties(notification,notificationDTO);
+        notificationDTO.setTypeName(NotificationEnum.nameOfStatus(notification.getType()));
+
+        return  notificationDTO;
     }
 }

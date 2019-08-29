@@ -12,4 +12,6 @@ public enum NotificationStatusEnum {
     public int getStatus() {
         return status;
     }
+
+
 }

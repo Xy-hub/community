@@ -45,7 +45,6 @@ public class PaginationDTO<T> {
         if(page==1){
             showPrevious=false;
         }else{
-
             showPrevious=true;
         }
         //显示下一页

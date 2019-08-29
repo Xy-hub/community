@@ -39,7 +39,7 @@ public class CommentService {
 
     //插入回复，做出许多表单验证
     @Transactional      //使用注解，当出现异常时会自动回滚，也就是回到方法运行之前的状态
-    public void insert(Comment comment) {
+    public void insert(Comment comment, User user) {
         //未选中问题进行回复
         if(comment.getParentId()==null||comment.getParentId()==0){
             throw new MyException(MyErrorCode.TARGET_PARAM_NOT_FOUOND);
@@ -54,13 +54,18 @@ public class CommentService {
             if(dbComment==null){
                 throw new MyException(MyErrorCode.COMMENT_NOT_FOUND);
             }
+            Question question = questionMapper.getById(dbComment.getParentId());
+            if(question==null){
+                throw new MyException(MyErrorCode.QUESTION_NOT_FOUND);
+            }
             commentMapper.insert(comment);
             Comment parentComment = new Comment();
             //更新上一级评论的回复数
             parentComment.setId(comment.getParentId());
             parentComment.setCommentCount(1);
             commentExtMapper.incCommentCouont(parentComment);
-            createNotify(comment, dbComment.getCommentator(), NotificationEnum.REPLY_COMMENT.getStatus());
+            //创建通知
+            createNotify(comment, dbComment.getCommentator(),user.getName(),question.getTitle(),NotificationEnum.REPLY_COMMENT.getStatus(),question.getId());
         }else{
             //回复问题
             Question question = questionMapper.getById(comment.getParentId());
@@ -72,18 +77,21 @@ public class CommentService {
             question.setCommentCount(1);
             //更新问题回复数
             questionMapper.incComment(question);
-            createNotify(comment,question.getCreator(), NotificationEnum.REPLY_QUESTION.getStatus());
+            //创建通知
+            createNotify(comment,question.getCreator(),user.getName(),question.getTitle(),NotificationEnum.REPLY_QUESTION.getStatus(),question.getId());
         }
     }
 
-    private void createNotify(Comment comment, Integer receiver, int replyCommentStatus) {
+    private void createNotify(Comment comment, Integer receiver, String notifierName, String outerTitle, int replyCommentStatus,Integer outerId) {
         Notification notification = new Notification();
         notification.setGmtCreate(System.currentTimeMillis());
         notification.setType(replyCommentStatus);
-        notification.setOuterId(comment.getParentId());
+        notification.setOuterId(outerId);
         notification.setNotifier(comment.getCommentator());
         notification.setStatus(NotificationStatusEnum.UNREAD.getStatus());
         notification.setReceiver(receiver);
+        notification.setNotifierName(notifierName);
+        notification.setOuterTitle(outerTitle);
         notificationMapper.insert(notification);
     }
 

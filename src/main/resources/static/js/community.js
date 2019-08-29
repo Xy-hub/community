@@ -42,6 +42,7 @@ function commentTarget(targetId, type, content){
         }
     });
 }
+//二级评论
 function comment(e){
     var commentId = e.getAttribute("data-id");
     var content=$("#input-"+commentId).val();

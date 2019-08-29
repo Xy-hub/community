@@ -26,16 +26,25 @@ public class CommentController {
     @Autowired
     CommentService commentService;
 
+    /**
+     * 回复功能
+     * @param commentDTO  页面传入的comment参数
+     * @param request
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value="/comment",method = RequestMethod.POST)
     public Object post(@RequestBody CommentCreateDTO commentDTO, HttpServletRequest request){
         User user=(User)request.getSession().getAttribute("user");
+        //判断是否登录
         if(user==null){
             return ResultDTO.errorOf(MyErrorCode.NO_LOGIN);
         }
+        //判断评论的内容是否为空
         if(commentDTO==null|| StringUtils.isBlank(commentDTO.getContent())){
             return ResultDTO.errorOf(MyErrorCode.CONTENT_IS_EMPTY);
         }
+        //回复变成一个对象插入数据库
         Comment comment = new Comment();
         comment.setParentId(commentDTO.getParentId());
         comment.setContent(commentDTO.getContent());
@@ -44,10 +53,15 @@ public class CommentController {
         comment.setGmtModified(System.currentTimeMillis());
         comment.setLikeCount(0);
         comment.setCommentator(Integer.valueOf(user.getAccountId()));
-        commentService.insert(comment);
+        commentService.insert(comment,user);
         return ResultDTO.successOf();
     }
 
+    /**
+     * 展开二级评论
+     * @param id 父评论id
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value="/comment/{id}",method = RequestMethod.GET)
     public ResultDTO<List<CommentDTO>> comments(@PathVariable(name = "id") Integer id){

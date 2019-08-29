@@ -1,8 +1,10 @@
 package com.myspringboot.community.interceptor;
 
+import com.myspringboot.community.mapper.NotificationMapper;
 import com.myspringboot.community.mapper.UserMapper;
 import com.myspringboot.community.model.User;
 import com.myspringboot.community.model.UserExample;
+import com.myspringboot.community.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -22,6 +24,9 @@ public class SessionInterceptor implements HandlerInterceptor {
     @Autowired
     UserMapper userMapper;
 
+    @Autowired
+    NotificationService notificationService;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         Cookie[] cookies = request.getCookies();
@@ -34,6 +39,8 @@ public class SessionInterceptor implements HandlerInterceptor {
                     List<User> users = userMapper.selectByExample(example);
                     if(users.size()>0){
                         request.getSession().setAttribute("user",users.get(0) );
+                        int unreadCount = notificationService.unreadCount(users.get(0).getAccountId());
+                        request.getSession().setAttribute("unreadMessage",unreadCount);
                     }
                     break;
                 }
