@@ -3,11 +3,11 @@
 <head>
     <title>蛇皮社区</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" href="css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="css/bootstrap-theme.min.css"/>
-    <link rel="stylesheet" href="css/community.css"/>
-    <script src="js/jquery-3.4.1.min.js"></script>
-    <script type="application/javascript" src="js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="/css/community.css"/>
+    <script src="/js/jquery-3.4.1.min.js"></script>
+    <script type="application/javascript" src="/js/bootstrap.min.js"></script>
 </head>
 <script type="application/javascript">
     window.onload=function(){
@@ -40,7 +40,7 @@
                         <h3 class="media-heading">
                             <a th:href="@{'/question/'+${question.id}}" th:text="${question.title}"></a>
                         </h3>
-                        <span th:text="${question.description}"></span>
+<!--                        <span th:text="${question.description}"></span>-->
                         <span class="text-desc"> <span th:text="${question.commentCount}"></span>个回复 •
                             <span th:text="${question.viewCount}"></span>次浏览 •
                                 <span th:text="${#dates.format(question.gmtCreate,'yyyy年MM月dd日 HH:mm')}"></span></span>

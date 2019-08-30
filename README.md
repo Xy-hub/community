@@ -7,6 +7,7 @@
 [Git](https://git-scm.com/)
 [lombook](https://projectlombok.org/)
 [thymeleaf](https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html)
+[markdown editor](http://editor.md.ipandao.com/)
 
 ## 脚本
 ```sql
@@ -45,7 +46,21 @@ CREATE TABLE `comment` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
-
+create table if not exists notification
+(
+	id int auto_increment
+		primary key,
+	notifier int not null comment '发出通知的人
+',
+	receiver int not null comment '收到通知的人',
+	outer_id int not null comment '外键',
+	gmt_create bigint not null comment '通知的时间
+',
+	status int default 0 not null comment '通知的状态，已读或未读',
+	type int not null comment '通知的类型',
+	notifier_name varchar(100) null,
+	outer_title varchar(255) null
+);
 
 
 ```bash
