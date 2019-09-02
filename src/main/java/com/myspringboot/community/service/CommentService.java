@@ -73,6 +73,7 @@ public class CommentService {
                 throw new MyException(MyErrorCode.QUESTION_NOT_FOUND);
             }
             //插入到回复表
+            comment.setCommentCount(0);
             commentMapper.insert(comment);
             question.setCommentCount(1);
             //更新问题回复数
@@ -83,6 +84,9 @@ public class CommentService {
     }
 
     private void createNotify(Comment comment, Integer receiver, String notifierName, String outerTitle, int replyCommentStatus,Integer outerId) {
+        if(receiver==comment.getCommentator()){
+            return;
+        }
         Notification notification = new Notification();
         notification.setGmtCreate(System.currentTimeMillis());
         notification.setType(replyCommentStatus);

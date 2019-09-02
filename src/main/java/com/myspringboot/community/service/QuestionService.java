@@ -39,10 +39,19 @@ public class QuestionService {
      * @param pageSize 每页的大小
      * @return
      */
-    public PaginationDTO list(Integer page, Integer pageSize) {
+    public PaginationDTO list(Integer page, Integer pageSize,String search) {
+
+        Integer total=0;
+        if(StringUtils.isNotBlank(search)){
+            String[] tags = StringUtils.split(search, " ");
+            search = Arrays.stream(tags).collect(Collectors.joining("|"));
+            total = questionMapper.countBySearch(search);
+        }else{
+            total = questionMapper.count();
+        }
         PaginationDTO paginationDTO = new PaginationDTO();
         //总问题数
-        Integer total = questionMapper.count();
+
         paginationDTO.setPagination(total,page,pageSize);
 
         if(page<1){
@@ -53,7 +62,15 @@ public class QuestionService {
 
         int offset=pageSize*(page-1);
         //按照指定条件获取所有问题，这里是每次获取pageSize条数据，从第offset开始
-        List<Question> questionList = questionMapper.list(offset,pageSize);
+        List<Question> questionList;
+        if(StringUtils.isNotBlank(search)){
+            String[] tags = StringUtils.split(search, " ");
+            search = Arrays.stream(tags).collect(Collectors.joining("|"));
+            questionList = questionMapper.listBySearch(offset,pageSize,search);
+        }else{
+            questionList = questionMapper.list(offset,pageSize);
+        }
+
         List<QuestionDTO> questionDTOList=new ArrayList<>();
         //对象转换与属性添加
         for (Question question : questionList) {

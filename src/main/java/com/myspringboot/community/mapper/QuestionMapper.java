@@ -39,4 +39,9 @@ public interface QuestionMapper {
     @Select("select * from question where tag regexp #{tag} and id<>#{id}")
     List<Question> selectRelated(Question quqestion);
 
+    @Select("select count(*) from question where title regexp #{search}")
+    Integer countBySearch(String search);
+
+    @Select("select * from question where title regexp #{search} order by gmt_create desc limit #{offset},#{pageSize}")
+    List<Question> listBySearch(@Param("offset") int offset, @Param("pageSize") Integer pageSize,@Param("search") String search);
 }
