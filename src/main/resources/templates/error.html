@@ -10,11 +10,14 @@
     <script type="application/javascript" src="/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <div th:replace="navigation :: nav"></div>
-            <div class="jumbotron" style="margin-bottom: 0">
-                <h1>出错啦！！！！</h1>
-                <p th:text="${message}"></p>
-                <p><a class="btn btn-primary btn-lg" href="/" role="button">回到主页</a></p>
-            </div>
+<div th:replace="navigation :: nav"></div>
+<div class="jumbotron" style="margin-bottom: 0">
+    <h1>出错啦！！！！</h1>
+    <p th:text="${message}"></p>
+    <p><a class="btn btn-primary btn-lg" href="/" role="button">回到主页</a></p>
+</div>
+<!-- 尾部开始 -->
+<div th:replace="foot :: foot"></div>
+<!-- 尾部结束 -->
 </body>
 </html>
