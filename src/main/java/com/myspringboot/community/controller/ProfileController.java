@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * 个人信息类
+ */
 @Controller
 public class ProfileController {
 
@@ -40,6 +43,7 @@ public class ProfileController {
             PaginationDTO paginationDTO = questionService.list(user.getAccountId(), page, pageSize);
             model.addAttribute("pagination",paginationDTO);
         }else if("replies".equals(action)){
+            //分页查找我的问题
             PaginationDTO paginationDTO=notificationService.list(user.getAccountId(),page,pageSize);
             int unreadCount=notificationService.unreadCount(user.getAccountId());
             model.addAttribute("section","replies");
@@ -47,8 +51,6 @@ public class ProfileController {
             model.addAttribute("pagination",paginationDTO);
 
         }
-        //分页查找我的问题
-
         return "profile";
     }
 }

@@ -15,14 +15,14 @@ public class IndexController {
     @Autowired
     private QuestionService questionService;
 
-
+    //搜索框内可有可无
     @GetMapping("/")
     public String index(Model model,
                         @RequestParam(name = "page",defaultValue = "1") Integer page,
                         @RequestParam(name = "pageSize",defaultValue = "5") Integer pageSize,
                         @RequestParam(name = "search",required = false) String search){
-
         //使用DTO解决mybatis级联操作
+        //根据条件查询所有问题并分页展示
         PaginationDTO pagination=questionService.list(page,pageSize,search);
         model.addAttribute("pagination",pagination);
         model.addAttribute("search",search);

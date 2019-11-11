@@ -1,5 +1,8 @@
 package com.myspringboot.community.enums;
 
+/**
+ * 通知枚举
+ */
 public enum NotificationEnum {
     REPLY_QUESTION(1,"回复了问题"),
     REPLY_COMMENT(2,"回复了评论");
@@ -19,6 +22,7 @@ public enum NotificationEnum {
         this.name=name;
     }
 
+    //根据type返回通知的内容
     public static String nameOfStatus(int type){
         for (NotificationEnum value : NotificationEnum.values()) {
             if(value.getStatus()==type){

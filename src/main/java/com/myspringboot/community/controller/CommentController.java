@@ -65,6 +65,7 @@ public class CommentController {
     @ResponseBody
     @RequestMapping(value="/comment/{id}",method = RequestMethod.GET)
     public ResultDTO<List<CommentDTO>> comments(@PathVariable(name = "id") Integer id){
+        //根据评论的类型是问题还是回复来查找所有评论
         List<CommentDTO> commentDTOS = commentService.listByTargetId(id, CommentTypeEnum.COMMENT);
         return ResultDTO.successOf(commentDTOS);
     }

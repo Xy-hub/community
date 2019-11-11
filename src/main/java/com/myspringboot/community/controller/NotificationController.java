@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * 通知信息类
+ */
 @Controller
 public class NotificationController {
 
@@ -28,7 +31,9 @@ public class NotificationController {
         if(user==null){
             return "redirect:/";
         }
+        //已读
         NotificationDTO notificationDTO=notificationService.read(id,user);
+        //判断通知类型
         if(NotificationEnum.REPLY_QUESTION.getStatus()==notificationDTO.getType()||
                 NotificationEnum.REPLY_COMMENT.getStatus()==notificationDTO.getType()){
             return "redirect:/question/"+notificationDTO.getOuterId();

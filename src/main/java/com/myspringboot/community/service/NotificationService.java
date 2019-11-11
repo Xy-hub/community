@@ -61,18 +61,21 @@ public class NotificationService {
         return paginationDTO;
     }
 
+    //未读数量
     public int unreadCount(String accountId) {
         NotificationExample example = new NotificationExample();
         example.createCriteria().andReceiverEqualTo(Integer.valueOf(accountId)).andStatusEqualTo(0);
         return notificationMapper.countByExample(example);
     }
 
+    //已读
     public NotificationDTO read(String id, User user) {
         Notification notification = notificationMapper.selectByPrimaryKey(id);
         if(notification.getReceiver()!=Integer.parseInt(user.getAccountId())){
             throw new MyException(MyErrorCode.READ_NOTIFICATION_FAIL);
         }
         notification.setStatus(NotificationStatusEnum.READ.getStatus());
+        //更新通知的状态
         notificationMapper.updateByPrimaryKey(notification);
         NotificationDTO notificationDTO = new NotificationDTO();
         BeanUtils.copyProperties(notification,notificationDTO);

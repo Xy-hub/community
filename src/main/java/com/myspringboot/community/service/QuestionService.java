@@ -151,6 +151,7 @@ public class QuestionService {
         return questionDTO;
     }
 
+
     public void createOrUpdate(Question question) {
         if(question.getId()==null){
             //创建
@@ -169,6 +170,7 @@ public class QuestionService {
         }
     }
 
+    //回复数
     public void incView(Integer id) {
         //Question question=questionMapper.getById(id);
         Question updateQuestion=new Question();
@@ -178,6 +180,7 @@ public class QuestionService {
         questionMapper.updateReply(updateQuestion);
     }
 
+    //搜索功能
     public List<QuestionDTO> selectRelated(QuestionDTO questionDTO) {
         if(StringUtils.isBlank(questionDTO.getTag())){
             return new ArrayList<>();

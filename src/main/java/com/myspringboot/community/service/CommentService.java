@@ -83,7 +83,9 @@ public class CommentService {
         }
     }
 
+    //创建通知
     private void createNotify(Comment comment, Integer receiver, String notifierName, String outerTitle, int replyCommentStatus,Integer outerId) {
+        //判断通知的接收者是否为评论的作者
         if(receiver==comment.getCommentator()){
             return;
         }
@@ -99,6 +101,7 @@ public class CommentService {
         notificationMapper.insert(notification);
     }
 
+    //通过评论的类型返回数据
     public List<CommentDTO> listByTargetId(Integer id, CommentTypeEnum type) {
         CommentExample example = new CommentExample();
         example.createCriteria().andParentIdEqualTo(id).andTypeEqualTo(type.getType());

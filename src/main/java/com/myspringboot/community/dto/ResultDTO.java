@@ -4,10 +4,15 @@ import com.myspringboot.community.exception.MyErrorCode;
 import com.myspringboot.community.exception.MyException;
 import lombok.Data;
 
+/**
+ * 返回结果
+ * @param <T>
+ */
 @Data
 public class ResultDTO<T> {
     private Integer code;
     private String message;
+    //任意类型
     private T data;
 
     public static ResultDTO errorOf(Integer code,String message){

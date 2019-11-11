@@ -35,6 +35,7 @@ public class CustomizeExceptionHandler {
                 resultDTO= ResultDTO.errorOf(MyErrorCode.SYS_ERROR);
             }
             try {
+                //设置响应的字符编码和类型
                 response.setCharacterEncoding("UTF-8");
                 response.setContentType("application/json");
                 response.setStatus(200);

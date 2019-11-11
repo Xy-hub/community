@@ -29,6 +29,7 @@ public class SessionInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        //获得Cookie信息
         Cookie[] cookies = request.getCookies();
         if(cookies!=null){
             for (Cookie cookie : cookies) {
@@ -39,6 +40,7 @@ public class SessionInterceptor implements HandlerInterceptor {
                     List<User> users = userMapper.selectByExample(example);
                     if(users.size()>0){
                         request.getSession().setAttribute("user",users.get(0) );
+                        //通知数
                         int unreadCount = notificationService.unreadCount(users.get(0).getAccountId());
                         request.getSession().setAttribute("unreadMessage",unreadCount);
                     }

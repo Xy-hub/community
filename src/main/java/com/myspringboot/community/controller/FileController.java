@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class FileController {
     @RequestMapping("/file/upload")
     @ResponseBody
+    //文件上传
     public FileDTO upload(){
         FileDTO fileDTO = new FileDTO();
         fileDTO.setSuccess(1);
